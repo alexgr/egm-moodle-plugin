@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>game</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+	</head>
+	<body ontouchstart="">
+        <link href="/leveleditor/css/main.css" rel="stylesheet" />
+        <link id="theme" href="/leveleditor/css/light.css" rel="stylesheet" />
+        <link id="theme" href="/leveleditor/css/dark.css" rel="stylesheet" />
+
+        <script src="/leveleditor/three.js"></script>
+        <script src="/leveleditor/modules/js/libs/system.min.js"></script>
+
+        <script src="/leveleditor/modules/js/controls/EditorControls.js"></script>
+        <script src="/leveleditor/modules/js/controls/TransformControls.js"></script>
+
+
+
+        <script src="/leveleditor/modules/js/renderers/Projector.js"></script>
+        <script src="/leveleditor/modules/js/renderers/CanvasRenderer.js"></script>
+        <script src="/leveleditor/modules/js/renderers/RaytracingRenderer.js"></script>
+        <script src="/leveleditor/modules/js/renderers/SoftwareRenderer.js"></script>
+        <script src="/leveleditor/modules/js/renderers/SVGRenderer.js"></script>
+
+
+        <script src="/leveleditor/js/libs/signals.min.js"></script>
+        <script src="/leveleditor/js/libs/ui.js"></script>
+        <script src="/leveleditor/js/libs/ui.three.js"></script>
+
+        <script src="/leveleditor/js/libs/app.js"></script>
+        <script src="/leveleditor/js/Player.js"></script>
+        <script src="/leveleditor/js/Script.js"></script>
+
+        <script src="/leveleditor/modules/js/effects/VREffect.js"></script>
+        <script src="/leveleditor/modules/js/controls/VRControls.js"></script>
+        <script src="/leveleditor/modules/js/vr/WebVR.js"></script>
+
+        <script src="/leveleditor/js/Storage.js"></script>
+
+        <script src="/leveleditor/js/Editor.js"></script>
+        <script src="/leveleditor/js/Config.js"></script>
+        <script src="/leveleditor/js/History.js"></script>
+        <script src="/leveleditor/js/Loader.js"></script>
+
+        <script src="/leveleditor/js/Sidebar.js"></script>
+        <script src="/leveleditor/js/Sidebar.Project.js"></script>
+
+
+
+        <script src="/leveleditor/js/Viewport.js"></script>
+        <script src="/leveleditor/js/Viewport.Info.js"></script>
+
+        <script src="/leveleditor/js/Command.js"></script>
+
+
+        <script src="/leveleditor/js/libs/html2canvas.js"></script>
+        <script src="/leveleditor/js/libs/three.html.js"></script>
+
+		<script>
+
+			window.URL = window.URL || window.webkitURL;
+			window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
+
+			Number.prototype.format = function (){
+				return this.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+			};
+
+			//
+
+			var editor = new Editor();
+
+			editor.clear();
+			editor.fromJSON( {!! $game->data !!} );
+
+			var viewport = new Viewport( editor );
+			document.body.appendChild( viewport.dom );
+
+
+			var player = new Player( editor );
+			document.body.appendChild( player.dom );
+
+			new Sidebar.Project( editor )
+
+	
+			function onWindowResize( event ) {
+
+				editor.signals.windowResize.dispatch();
+
+			}
+
+			window.addEventListener( 'resize', onWindowResize, false );
+
+			onWindowResize();
+
+			editor.signals.startPlayer.dispatch();
+
+		</script>
+	</body>
+</html>
